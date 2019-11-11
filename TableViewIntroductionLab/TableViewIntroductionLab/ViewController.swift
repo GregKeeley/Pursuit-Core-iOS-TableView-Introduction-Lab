@@ -9,12 +9,34 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var taskTable: UITableView!
+    private var tasks = Task.allTasks
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        print("There are \(tasks.count) tasks in the tasks Array")
+        taskTable.dataSource = self
     }
-
-
 }
 
+
+
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tasks.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "taskCell", for: indexPath)
+        let task = tasks[indexPath.row]
+        
+        cell.textLabel?.text = task.name
+        cell.detailTextLabel?.text = task.dueDate.description
+        return cell
+    }
+}
